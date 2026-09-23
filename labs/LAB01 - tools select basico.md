@@ -264,7 +264,9 @@ Escribe una consulta SQL para seleccionar las columnas título (`titulo`) y repr
 
 Solución:
 ```sql
-
+select titulo,reproducciones
+from cancion_muestra
+order by reproducciones desc;
 ```
 
 | titulo                | reproducciones |
@@ -407,35 +409,8 @@ Salida:
 Escribe una consulta para seleccionar las distintas combinaciones de país (`pais`) y género (`genero`) de la tabla `cancion`.
 
 Solución:
-```sql
-
-```
-
-| pais           | genero |
-| -------------- | ------ |
-| Reino Unido    | Rock   |
-| Estados Unidos | Pop    |
-| Reino Unido    | Pop    |
-| Estados Unidos | Rock   |
-| España         | Rock   |
-| España         | Pop    |
-| Estados Unidos | Rap    |
-| Reino Unido    | Rap    |
-| España         | Rap    |
-
----
-
-### Filtrar resultados con `where`
-
-Código SQL:
-```sql
-select distinct
-    genero,
-    idioma,
-    pais
-from cancion
-where pais = 'Estados Unidos';
-```
+	select distinct pais, genero
+	from cancion;
 Salida:
 
 | genero | idioma | pais           |
@@ -463,6 +438,9 @@ Escribe una consulta para seleccionar las reproducciones (`reproducciones`) de l
 
 Solución:
 ```sql
+select reproducciones
+from cancion
+where reproducciones < 1000000;
 
 ```
 
@@ -486,7 +464,9 @@ Escribe otra consulta para seleccionar el género (`genero`) y el idioma (`idiom
 
 Solución:
 ```sql
-
+select distinct genero, idioma
+from cancion
+where reproducciones < 1000000;
 ```
 
 | genero | idioma |
@@ -540,13 +520,14 @@ Salida:
 
 ---
 
-### Operadores booleanos
+### ==Operadores booleanos==
 
 | Operador | Descripción                                                     |
 | -------- | --------------------------------------------------------------- |
-| AND      | Se evalúa a verdadero si ambas condiciones son verdaderas       |
-| OR       | Se evalúa a verdadero si alguna de las condiciones es verdadera |
-| NOT      | Cambia el resultado de la condición                             |
+| ==AND==  | Se evalúa a verdadero si ambas condiciones son verdaderas       |
+| ==OR==   | Se evalúa a verdadero si alguna de las condiciones es verdadera |
+| ==NOT==  | Cambia el resultado de la condición                             |
+|          |                                                                 |
 
 ---
 
@@ -556,7 +537,9 @@ Utiliza el operador not para seleccionar las canciones (solo las columnas `titul
 
 Solución:
 ```sql
-
+select titulo, genero, pais
+from cancion
+where genero != "Rap";
 ```
 
 | titulo                     | genero | pais           |
@@ -597,7 +580,9 @@ El operador `OR` de SQL es un operador ‘o inclusivo’: se ejecuta correctamen
 
 Solución:
 ```sql
-
+select distinct titulo, idioma, pais
+from cancion
+where (idioma = 'ES' and pais != 'España') or (idioma != 'ES' and pais ='España');
 ```
 
 | titulo           | idioma | pais           |
@@ -661,16 +646,16 @@ Salida:
 
 ---
 
-### Funciones matemáticas
+### ==Funciones matemáticas==
 
-| Función    | Descripción                                                |
-| ---------- | ---------------------------------------------------------- |
-| Round(X)   | Redondea el número X su entero más cercano                 |
-| Round(X,Y) | Redondea el número X a Y decimales                         |
-| Ceil(X)  | Redondea el número hacia el entero inmediatamente superior |
-| Floor(X) | Redondea el número hacia el entero inmediatamente inferior |
-| Abs(X)     | Valor absoluto de X                                        |
-| Sqrt(X)    | Raíz cuadrada de X                                         |
+| Función        | Descripción                                                |
+| -------------- | ---------------------------------------------------------- |
+| ==Round(X)==   | Redondea el número X su entero más cercano                 |
+| ==Round(X,Y)== | Redondea el número X a Y decimales                         |
+| ==Ceil(X)==        | Redondea el número hacia el entero inmediatamente superior |
+| ==Floor(X)==       | Redondea el número hacia el entero inmediatamente inferior |
+| ==Abs(X)==         | Valor absoluto de X                                        |
+| ==Sqrt(X)==        | Raíz cuadrada de X                                         |
 
 ---
 
@@ -705,7 +690,10 @@ Escribe una consulta que calcule y devuelva una columna llamada `porcentaje_me_g
 
 Solución:
 ```sql
-
+select 
+    round((me_gusta * 100.0) / reproducciones, 1) as porcentaje_me_gusta
+from cancion
+limit 10;
 ```
 
 | porcentaje_me_gusta |
@@ -751,17 +739,17 @@ Salida:
 
 ---
 
-### Funciones de texto
+### ==Funciones de texto==
 
 | Función         | Descripción                                                  |
 | --------------- | ------------------------------------------------------------ |
-| \|\|            | Operador de concatenación                                    |
-| Length(X)       | Longitud de la cadena de texto X                             |
-| Lower(X)        | Pasa a minúsculas todos las letras                           |
-| Upper(X)        | Pasa a mayúsculas todos las letras                           |
-| Initcap(X)      | Pasa todas las letras a minúscula y las primeras a mayúscula |
-| substring(X, N) | Devuelve la subcadena de X a partir del caracter N           |
-| Replace(X,Y,Z)  | Reemplaza la subcadena Y dentro de X por Z                   |
+| ==\|\|==            | Operador de concatenación                                    |
+| ==Length(X)==       | Longitud de la cadena de texto X                             |
+| ==Lower(X)==        | Pasa a minúsculas todos las letras                           |
+| ==Upper(X)==        | Pasa a mayúsculas todos las letras                           |
+| ==Initcap(X)==      | Pasa todas las letras a minúscula y las primeras a mayúscula |
+| ==substring(X, N)== | Devuelve la subcadena de X a partir del caracter N           |
+| ==Replace(X,Y,Z)==  | Reemplaza la subcadena Y dentro de X por Z                   |
 |                 |                                                              |
 
 ---
@@ -772,7 +760,8 @@ Escribe una consulta que calcule y devuelva una columna llamada `que_donde` que 
 
 Solución:
 ```sql
-
+select distinct genero || ' ' || pais as que_donde
+from cancion;
 ```
 
 | que_donde           |
